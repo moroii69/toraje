@@ -236,7 +236,7 @@ const HowItWorks = () => (
               </a>.
             </li>
             <li>
-              For valid, non-expired files, we:
+              For valid, non-expired files, i:
               <ul className="list-disc pl-5 mt-2 space-y-1 text-gray-200">
                 <li>Decrypt the encrypted key using the master key</li>
                 <li>Use the decrypted key to decrypt the file data</li>
