@@ -63,7 +63,7 @@ const Home = () => {
       {/* Minimal Footer */}
       <footer className="mt-auto py-8 text-center">
         <p className="text-sm text-gray-500">
-          © Mohammed Ufraan – Because 69 minutes is all the privacy I can afford.
+        © Mohammed Ufraan – Because 69 minutes is all the privacy I can afford.
         </p>
       </footer>
     </div>
