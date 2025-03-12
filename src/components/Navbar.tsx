@@ -82,15 +82,6 @@ const Navbar = () => {
               <span>How it works</span>
             </MobileNavLink>
 
-            <a
-              href="https://github.com/moroii69/toraje"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 px-3 py-2 rounded text-gray-400 hover:bg-gray-800 hover:text-white transition-colors w-full"
-            >
-              <Github className="w-4 h-4" />
-              <span>GitHub</span>
-            </a>
           </div>
         </div>
       )}
