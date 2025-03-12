@@ -54,6 +54,11 @@ const Navbar = () => {
               <span>How it works</span>
             </NavLink>
 
+            <NavLink to="/contact-support" active={isActive('/contact-support')}>
+              <HelpCircle className="w-4 h-4" />
+              <span>Contact Support</span>
+            </NavLink>
+
           </div>
         </div>
       </div>
@@ -80,6 +85,11 @@ const Navbar = () => {
             <MobileNavLink to="/how-it-works" active={isActive('/how-it-works')} onClick={toggleMenu}>
               <HelpCircle className="w-4 h-4" />
               <span>How it works</span>
+            </MobileNavLink>
+
+            <MobileNavLink to="/contact-support" active={isActive('/contact-support')} onClick={toggleMenu}>
+              <HelpCircle className="w-4 h-4" />
+              <span>Contact Support</span>
             </MobileNavLink>
 
           </div>

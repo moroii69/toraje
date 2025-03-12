@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Upload from './pages/Upload';
 import Retrieve from './pages/Retrieve';
 import HowItWorks from './pages/HowItWorks';
+import ContactSupport from './pages/ContactSupport';
 
 function App() {
   return (
@@ -18,9 +19,10 @@ function App() {
             <Route path="/upload" element={<Upload />} />
             <Route path="/retrieve" element={<Retrieve />} />
             <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/contact-support" element={<ContactSupport />} />
           </Routes>
         </main>
-        <Toaster 
+        <Toaster
           position="bottom-center"
           toastOptions={{
             style: {

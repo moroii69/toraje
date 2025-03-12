@@ -7,4 +7,5 @@ export interface FileData {
   uploadedAt: number;
   expiresAt: number;
   data: string;
+  encryptedKey: string; // Encrypted encryption key
 }
