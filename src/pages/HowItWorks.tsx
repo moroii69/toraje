@@ -112,7 +112,7 @@ const HowItWorks = () => (
 
           <ol className="list-decimal pl-5 mb-4 space-y-3 text-gray-300">
             <li>
-              We generate a cryptographically secure random 16-byte encryption key using{' '}
+              I generate a cryptographically secure random 16-byte encryption key using{' '}
               <a href="https://cryptojs.gitbook.io/docs" className="text-emerald-400 font-medium hover:underline">
                 CryptoJS
               </a>{' '}
@@ -230,7 +230,7 @@ const HowItWorks = () => (
               The code is validated using a regex pattern (<code className="bg-gray-700 px-1 py-0.5 rounded text-emerald-400">/^[A-Za-z0-9]{6}$/</code>) before querying Firebase.
             </li>
             <li>
-              If the code is valid, we check if the file has expired. Expired files are automatically deleted, and the user is notified via{' '}
+              If the code is valid, it checks if the file has expired. Expired files are automatically deleted, and the user is notified via{' '}
               <a href="https://react-hot-toast.com" className="text-emerald-400 font-medium hover:underline">
                 react-hot-toast
               </a>.
@@ -246,7 +246,7 @@ const HowItWorks = () => (
               </ul>
             </li>
             <li>
-              After download, we clean up by revoking the temporary URL with{' '}
+              After download, i clean up by revoking the temporary URL with{' '}
               <a href="https://developer.mozilla.org/en-US/docs/Web/API/URL/revokeObjectURL" className="text-emerald-400 font-medium hover:underline">
                 URL.revokeObjectURL
               </a>
@@ -295,7 +295,7 @@ const HowItWorks = () => (
           <div className="bg-gray-700 p-4 rounded-md mb-4">
             <h3 className="font-semibold text-gray-300 mb-2">Technical Considerations</h3>
             <p className="text-gray-200 text-sm">
-              For files up to 20MB, my Base64 and in-memory processing approach is efficient and secure. For larger files or higher-volume applications, we recommend implementing{' '}
+              For files up to 20MB, my Base64 and in-memory processing approach is efficient and secure. For larger files or higher-volume applications, i recommend implementing{' '}
               <a href="https://firebase.google.com/docs/storage" className="text-emerald-400 font-medium hover:underline">
                 Firebase Storage
               </a>{' '}
