@@ -28,7 +28,7 @@ const Home = () => {
               className="flex items-center justify-center px-6 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-black font-medium rounded transition-colors"
             >
               <FileUp className="w-4 h-4 mr-2" />
-              Upload a file (one file at a time supported).
+              Upload
             </Link>
             <Link
               to="/retrieve"
