@@ -1,143 +1,138 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FileUp, Download, HelpCircle, Home, Menu, X, Github } from 'lucide-react';
+import { FileUp, Download, HelpCircle, Home, Menu, X, Github, LucideFileUp } from 'lucide-react';
 
 const Navbar = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
-  const isActive = (path: string) => location.pathname === path;
-  
+
+  const isActive = (path: string): boolean => location.pathname === path;
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  
+
   return (
-    <nav className="bg-zinc-900 border-b border-zinc-800">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center space-x-2">
-            <FileUp className="w-6 h-6 text-emerald-500" />
-            <span className="font-bold text-lg">toraje</span>
+    <nav className="bg-black border-b border-gray-800 py-5">
+      <div className="max-w-5xl mx-auto px-4">
+        <div className="flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2">
+            <LucideFileUp className="w-5 h-5 text-emerald-400" />
+            <span className="font-mono text-base">Toraje</span>
           </Link>
-          
+
           {/* Mobile menu button */}
           <button
             onClick={toggleMenu}
-            className="md:hidden p-2 rounded-lg hover:bg-zinc-800 transition-colors"
+            className="md:hidden p-2 rounded hover:bg-gray-800 transition-colors"
+            aria-label="Toggle menu"
           >
             {isMenuOpen ? (
-              <X className="w-6 h-6 text-zinc-400" />
+              <X className="w-5 h-5 text-gray-400" />
             ) : (
-              <Menu className="w-6 h-6 text-zinc-400" />
+              <Menu className="w-5 h-5 text-gray-400" />
             )}
           </button>
-          
+
           {/* Desktop navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden md:flex items-center gap-1">
             <NavLink to="/" active={isActive('/')}>
               <Home className="w-4 h-4" />
-              <span>home</span>
+              <span>Home</span>
             </NavLink>
-            
+
             <NavLink to="/upload" active={isActive('/upload')}>
               <FileUp className="w-4 h-4" />
-              <span>upload</span>
+              <span>Upload</span>
             </NavLink>
-            
+
             <NavLink to="/retrieve" active={isActive('/retrieve')}>
               <Download className="w-4 h-4" />
-              <span>retrieve</span>
+              <span>Retrieve</span>
             </NavLink>
-            
+
             <NavLink to="/how-it-works" active={isActive('/how-it-works')}>
               <HelpCircle className="w-4 h-4" />
-              <span>how it works</span>
+              <span>How it works</span>
             </NavLink>
 
             <a
               href="https://github.com/moroii69/toraje"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-1 px-4 py-2 rounded-lg text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors"
+              className="flex items-center gap-1 px-3 py-1.5 rounded text-gray-400 hover:bg-gray-800 hover:text-white transition-colors ml-2"
+              aria-label="GitHub"
             >
               <Github className="w-4 h-4" />
-              <span className="sr-only">github</span>
             </a>
           </div>
         </div>
       </div>
 
       {/* Mobile navigation */}
-      <div
-        className={`md:hidden ${
-          isMenuOpen ? 'block' : 'hidden'
-        } border-t border-zinc-800`}
-      >
-        <div className="px-2 pt-2 pb-3 space-y-1">
-          <MobileNavLink to="/" active={isActive('/')} onClick={toggleMenu}>
-            <Home className="w-5 h-5" />
-            <span>Home</span>
-          </MobileNavLink>
-          
-          <MobileNavLink to="/upload" active={isActive('/upload')} onClick={toggleMenu}>
-            <FileUp className="w-5 h-5" />
-            <span>Upload</span>
-          </MobileNavLink>
-          
-          <MobileNavLink to="/retrieve" active={isActive('/retrieve')} onClick={toggleMenu}>
-            <Download className="w-5 h-5" />
-            <span>Retrieve</span>
-          </MobileNavLink>
-          
-          <MobileNavLink to="/how-it-works" active={isActive('/how-it-works')} onClick={toggleMenu}>
-            <HelpCircle className="w-5 h-5" />
-            <span>How It Works</span>
-          </MobileNavLink>
+      {isMenuOpen && (
+        <div className="md:hidden border-t border-gray-800 mt-5">
+          <div className="px-4 py-3 space-y-1">
+            <MobileNavLink to="/" active={isActive('/')} onClick={toggleMenu}>
+              <Home className="w-4 h-4" />
+              <span>Home</span>
+            </MobileNavLink>
 
-          <a
-            href="https://github.com/moroii69/toraje"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center space-x-3 px-3 py-2 rounded-lg text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors w-full"
-          >
-            <Github className="w-5 h-5" />
-            <span>GitHub</span>
-          </a>
+            <MobileNavLink to="/upload" active={isActive('/upload')} onClick={toggleMenu}>
+              <FileUp className="w-4 h-4" />
+              <span>Upload</span>
+            </MobileNavLink>
+
+            <MobileNavLink to="/retrieve" active={isActive('/retrieve')} onClick={toggleMenu}>
+              <Download className="w-4 h-4" />
+              <span>Retrieve</span>
+            </MobileNavLink>
+
+            <MobileNavLink to="/how-it-works" active={isActive('/how-it-works')} onClick={toggleMenu}>
+              <HelpCircle className="w-4 h-4" />
+              <span>How it works</span>
+            </MobileNavLink>
+
+            <a
+              href="https://github.com/moroii69/toraje"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-3 py-2 rounded text-gray-400 hover:bg-gray-800 hover:text-white transition-colors w-full"
+            >
+              <Github className="w-4 h-4" />
+              <span>GitHub</span>
+            </a>
+          </div>
         </div>
-      </div>
+      )}
     </nav>
   );
 };
 
-const NavLink = ({ to, children, active }: { to: string; children: React.ReactNode; active: boolean }) => (
+interface NavLinkProps {
+  to: string;
+  children: React.ReactNode;
+  active: boolean;
+}
+
+const NavLink = ({ to, children, active }: NavLinkProps) => (
   <Link
     to={to}
-    className={`flex items-center space-x-1 px-4 py-2 rounded-lg transition-colors
-      ${active 
-        ? 'bg-zinc-800 text-emerald-500' 
-        : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}`}
+    className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-sm transition-colors
+      ${active
+        ? 'bg-gray-800 text-emerald-400'
+        : 'text-gray-400 hover:bg-gray-800 hover:text-white'}`}
   >
     {children}
   </Link>
 );
 
-const MobileNavLink = ({ 
-  to, 
-  children, 
-  active, 
-  onClick 
-}: { 
-  to: string; 
-  children: React.ReactNode; 
-  active: boolean;
-  onClick: () => void;
-}) => (
+const MobileNavLink = ({ to, children, active, onClick }: { to: string; children: React.ReactNode; active: boolean; onClick: () => void }) => (
   <Link
     to={to}
     onClick={onClick}
-    className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors
-      ${active 
-        ? 'bg-zinc-800 text-emerald-500' 
-        : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'}`}
+    className={`flex items-center gap-3 px-3 py-2 rounded transition-colors
+      ${active
+        ? 'bg-gray-800 text-emerald-400'
+        : 'text-gray-400 hover:bg-gray-800 hover:text-white'}`}
   >
     {children}
   </Link>

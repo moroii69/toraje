@@ -23,7 +23,7 @@ const Upload = () => {
       const interval = setInterval(() => {
         const remaining = Math.max(0, uploadedFile.expiresAt - Date.now());
         setTimeLeft(remaining);
-        
+
         if (remaining === 0) {
           setUploadedFile(null);
           setTimeLeft(null);
@@ -66,7 +66,7 @@ const Upload = () => {
         try {
           const base64Data = e.target?.result as string;
           const expiresAt = Date.now() + 69 * 60 * 1000;
-          
+
           const fileData: FileData = {
             id: code,
             code,
@@ -135,16 +135,19 @@ const Upload = () => {
     maxSize: MAX_FILE_SIZE
   });
 
-  const copyToClipboard = async (text: string) => {
+  const copyToClipboard = async (text: string): Promise<void> => {
     try {
       await navigator.clipboard.writeText(text);
       setIsCopied(true);
-      toast.success('code copied to clipboard!');
+      toast.success('Code successfully copied to clipboard.');
+
       setTimeout(() => setIsCopied(false), 2000);
-    } catch (err) {
-      toast.error('failed to copy code');
+    } catch (error) {
+      console.error('Error copying to clipboard:', error);
+      toast.error('Failed to copy code. Please try again.');
     }
   };
+
 
   const formatTimeLeft = (ms: number) => {
     const minutes = Math.floor(ms / 60000);
@@ -153,78 +156,78 @@ const Upload = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8 text-center">upload file</h1>
-      
-      <div className="bg-zinc-900 rounded-xl border border-zinc-800 p-6">
+    <div className="max-w-2xl mx-auto px-4 py-8">
+      <h1 className="text-2xl font-medium mb-8 text-white">Upload file</h1>
+
+      <div className="bg-gray-900 bg-opacity-40 rounded-md border border-gray-800 p-6">
         <div
           {...getRootProps()}
-          className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors relative
-            ${isDragActive 
-              ? 'border-emerald-500 bg-zinc-800' 
-              : 'border-zinc-700 hover:border-emerald-500'}`}
+          className={`border border-dashed rounded p-8 text-center cursor-pointer transition-colors relative
+            ${isDragActive
+              ? 'border-emerald-400 bg-gray-800'
+              : 'border-gray-700 hover:border-emerald-400 hover:bg-black'}`}
         >
           <input {...getInputProps()} />
-          <UploadIcon className="w-12 h-12 mx-auto mb-4 text-zinc-400" />
+          <UploadIcon className="w-10 h-10 mx-auto mb-4 text-gray-500" />
           {isDragActive ? (
-            <p className="text-emerald-500">drop the file here</p>
+            <p className="text-emerald-400 text-sm">Drop the file here</p>
           ) : (
-            <p className="text-zinc-400">
-              drag & drop a file here, or click to select
+            <p className="text-gray-400 text-sm">
+              Drag & drop a file here, or click to select
             </p>
           )}
-          <div className="flex items-center justify-center gap-2 text-sm text-zinc-500 mt-2">
-            <AlertCircle className="w-4 h-4" />
-            <span>maximum file size: {formatFileSize(MAX_FILE_SIZE)}</span>
+          <div className="flex items-center justify-center gap-2 text-xs text-gray-500 mt-3">
+            <AlertCircle className="w-3 h-3" />
+            <span>Maximum file size: {formatFileSize(MAX_FILE_SIZE)}</span>
           </div>
         </div>
 
         {isUploading && (
           <div className="mt-4 space-y-2">
-            <div className="flex justify-between text-sm text-zinc-400">
+            <div className="flex justify-between text-xs text-gray-400">
               <span>Uploading...</span>
               <span>{progress}%</span>
             </div>
-            <Progress value={progress} className="h-2" />
+            <Progress value={progress} className="h-1" />
           </div>
         )}
 
         {uploadedFile && (
-          <div className="mt-6 space-y-6">
-            <div className="bg-zinc-800 rounded-lg p-6">
-              <h3 className="font-semibold text-emerald-500 mb-3">your share code</h3>
-              <div className="flex items-center gap-2 bg-black rounded-lg p-4 border border-zinc-700">
-                <span className="font-mono text-2xl font-bold text-white flex-1 text-center">
+          <div className="mt-6 space-y-4">
+            <div className="bg-black rounded p-4 border border-gray-800">
+              <h3 className="text-sm font-medium text-emerald-400 mb-3">Your share code</h3>
+              <div className="flex items-center gap-2 bg-gray-900 rounded p-3 border border-gray-800">
+                <span className="font-mono text-xl font-medium text-white flex-1 text-center">
                   {uploadedFile.code}
                 </span>
                 <button
                   onClick={() => copyToClipboard(uploadedFile.code)}
-                  className="p-2 hover:bg-zinc-800 rounded-lg transition-colors"
+                  className="p-1.5 hover:bg-gray-800 rounded transition-colors"
                   title="Copy to clipboard"
                 >
                   {isCopied ? (
-                    <CheckCircle className="w-5 h-5 text-emerald-500" />
+                    <CheckCircle className="w-4 h-4 text-emerald-400" />
                   ) : (
-                    <Copy className="w-5 h-5 text-zinc-400" />
+                    <Copy className="w-4 h-4 text-gray-400" />
                   )}
                 </button>
               </div>
             </div>
 
-            <div className="bg-zinc-800 rounded-lg p-6">
+            <div className="bg-black rounded p-4 border border-gray-800">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-zinc-900 rounded-lg">
-                  {getFileIcon(uploadedFile.fileType, "w-8 h-8 text-emerald-500")}
+                <div className="p-2 bg-gray-900 rounded">
+                  {getFileIcon(uploadedFile.fileType, "w-6 h-6 text-emerald-400")}
                 </div>
-                <div className="flex-1 space-y-3">
-                  <h3 className="font-semibold">file details</h3>
-                  <div className="space-y-2 text-sm text-zinc-400">
+                <div className="flex-1 space-y-2">
+                  <h3 className="text-sm font-medium">File details</h3>
+                  <div className="space-y-1.5 text-xs text-gray-400">
                     <p>Name: {uploadedFile.fileName}</p>
                     <p>Size: {formatFileSize(uploadedFile.fileSize)}</p>
                     <p>Uploaded: {formatDate(uploadedFile.uploadedAt)}</p>
                     {timeLeft !== null && (
-                      <p className="flex items-center gap-2 text-emerald-500">
-                        <Clock className="w-4 h-4" />
+                      <p className="flex items-center gap-2 text-emerald-400">
+                        <Clock className="w-3 h-3" />
                         Expires in {formatTimeLeft(timeLeft)}
                       </p>
                     )}
@@ -234,11 +237,11 @@ const Upload = () => {
 
               {previewUrl && (
                 <div className="mt-4">
-                  <p className="text-sm font-medium text-zinc-400 mb-2">preview:</p>
-                  <img 
-                    src={previewUrl} 
-                    alt="File preview" 
-                    className="w-full h-48 object-contain rounded-lg border border-zinc-700"
+                  <p className="text-xs font-medium text-gray-400 mb-2">Preview:</p>
+                  <img
+                    src={previewUrl}
+                    alt="File preview"
+                    className="w-full h-40 object-contain rounded border border-gray-800"
                   />
                 </div>
               )}
@@ -249,5 +252,4 @@ const Upload = () => {
     </div>
   );
 };
-
 export default Upload;
