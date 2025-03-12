@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FileUp, Download, HelpCircle, Home, Menu, X, Github, LucideFileUp } from 'lucide-react';
+import { FileUp, Download, HelpCircle, Home, Menu, X, LucideFileUp } from 'lucide-react';
 
 const Navbar = () => {
   const location = useLocation();
@@ -54,15 +54,6 @@ const Navbar = () => {
               <span>How it works</span>
             </NavLink>
 
-            <a
-              href="https://github.com/moroii69/toraje"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 px-3 py-1.5 rounded text-gray-400 hover:bg-gray-800 hover:text-white transition-colors ml-2"
-              aria-label="GitHub"
-            >
-              <Github className="w-4 h-4" />
-            </a>
           </div>
         </div>
       </div>

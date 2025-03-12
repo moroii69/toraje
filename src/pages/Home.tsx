@@ -4,7 +4,7 @@ import { FileUp, Download, Shield, Clock } from 'lucide-react';
 
 const Home = () => {
   return (
-    <div className="max-w-5xl mx-auto px-4 py-16 text-white bg-black min-h-screen">
+    <div className="max-w-5xl mx-auto px-4 py-16 text-white bg-black min-h-screen flex flex-col">
       {/* Header with subtle gradient border bottom */}
 
       {/* Hero Section */}
@@ -59,6 +59,13 @@ const Home = () => {
           description="Simple drag-and-drop interface for files up to 20MB"
         />
       </section>
+
+      {/* Minimal Footer */}
+      <footer className="mt-auto py-8 text-center">
+        <p className="text-sm text-gray-500">
+          © Mohammed Ufraan – Because 69 minutes is all the privacy I can afford.
+        </p>
+      </footer>
     </div>
   );
 };
