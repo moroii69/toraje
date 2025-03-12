@@ -78,7 +78,7 @@ Best regards,
                 <p className="mt-1">
                   Include a description, steps to reproduce, and error messages. Check our{' '}
                   <a
-                    href="https://example.com/docs"
+                    href="https://toraje.ufraan.com/how-it-works"
                     className="text-emerald-400 hover:text-emerald-300 underline animate-hover-scale"
                   >
                     documentation
