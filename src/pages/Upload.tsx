@@ -248,6 +248,13 @@ const Upload = () => {
             </div>
           </div>
         )}
+
+        <div className="mt-6 text-xs text-gray-500 bg-gray-900 bg-opacity-50 rounded p-3 border border-gray-800">
+          <p className="font-medium">Note:</p>
+          <p>
+            If you're experiencing a slow network connection, please allow a few seconds after uploading your file for the share code to appear. I am actively working on implementing an enhanced progress bar to improve this experience.
+          </p>
+        </div>
       </div>
     </div>
   );
