@@ -64,10 +64,10 @@ Best regards,
             <p className="text-sm text-center text-slate-400">
               Report bugs or issues by emailing{' '}
               <a
-                href="mailto:kurosen930@gmail.com?subject=Bug%20Report%20or%20Support%20Request"
+                href="mailto:hey@ufraan.com?subject=Bug%20Report%20or%20Support%20Request"
                 className="text-emerald-400 hover:text-emerald-300 underline animate-hover-scale"
               >
-                kurosen930@gmail.com
+                hey@ufraan.com
               </a>
               .
             </p>
