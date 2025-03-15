@@ -195,32 +195,18 @@ Best regards,
                 <p className="text-xs font-medium text-slate-400 mb-3">Quick Links</p>
                 <div className="grid grid-cols-2 gap-2">
                   <a
-                    href="https://toraje.ufraan.com/docs"
+                    href="https://toraje.ufraan.com/how-it-works"
                     className="flex items-center gap-2 text-xs p-2 bg-gray-900 bg-opacity-40 rounded-md hover:bg-opacity-60 transition-colors"
                   >
                     <Book className="w-4 h-4 text-emerald-400" />
                     <span className="text-slate-300">Documentation</span>
                   </a>
                   <a
-                    href="https://github.com/ufraan"
+                    href="https://github.com/moroii69"
                     className="flex items-center gap-2 text-xs p-2 bg-gray-900 bg-opacity-40 rounded-md hover:bg-opacity-60 transition-colors"
                   >
                     <Github className="w-4 h-4 text-emerald-400" />
                     <span className="text-slate-300">GitHub</span>
-                  </a>
-                  <a
-                    href="https://toraje.ufraan.com/status"
-                    className="flex items-center gap-2 text-xs p-2 bg-gray-900 bg-opacity-40 rounded-md hover:bg-opacity-60 transition-colors"
-                  >
-                    <Info className="w-4 h-4 text-emerald-400" />
-                    <span className="text-slate-300">Status Page</span>
-                  </a>
-                  <a
-                    href="https://toraje.ufraan.com/privacy"
-                    className="flex items-center gap-2 text-xs p-2 bg-gray-900 bg-opacity-40 rounded-md hover:bg-opacity-60 transition-colors"
-                  >
-                    <ExternalLink className="w-4 h-4 text-emerald-400" />
-                    <span className="text-slate-300">Privacy Policy</span>
                   </a>
                 </div>
               </div>

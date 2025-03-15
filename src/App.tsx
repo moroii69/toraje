@@ -21,7 +21,7 @@ function App() {
             <Route path="/retrieve" element={<Retrieve />} />
             <Route path="/how-it-works" element={<HowItWorks />} />
             <Route path="/contact-support" element={<ContactSupport />} />
-            <Route path="/status-page" element={<StatusPage />} />
+            <Route path="/status" element={<StatusPage />} />
 
           </Routes>
         </main>
