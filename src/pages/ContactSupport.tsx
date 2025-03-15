@@ -117,14 +117,7 @@ Best regards,
                 <div>
                   <p className="font-medium text-slate-400">What to Include</p>
                   <p className="mt-1">
-                    Include a description, steps to reproduce, and error messages. Check our{' '}
-                    <a
-                      href="https://toraje.ufraan.com/how-it-works"
-                      className="text-emerald-400 hover:text-emerald-300 underline animate-hover-scale"
-                    >
-                      documentation
-                    </a>{' '}
-                    for more help.
+                    Include a description, steps to reproduce, and error messages.
                   </p>
                 </div>
               </div>
@@ -190,26 +183,7 @@ Best regards,
                 {emailFormat}
               </pre>
 
-              {/* Quick Links - NEW FEATURE */}
-              <div className="mt-6 border-t border-gray-800 pt-4 animate-fade-in-slow" style={{ animationDelay: '0.6s' }}>
-                <p className="text-xs font-medium text-slate-400 mb-3">Quick Links</p>
-                <div className="grid grid-cols-2 gap-2">
-                  <a
-                    href="https://toraje.ufraan.com/how-it-works"
-                    className="flex items-center gap-2 text-xs p-2 bg-gray-900 bg-opacity-40 rounded-md hover:bg-opacity-60 transition-colors"
-                  >
-                    <Book className="w-4 h-4 text-emerald-400" />
-                    <span className="text-slate-300">Documentation</span>
-                  </a>
-                  <a
-                    href="https://github.com/moroii69"
-                    className="flex items-center gap-2 text-xs p-2 bg-gray-900 bg-opacity-40 rounded-md hover:bg-opacity-60 transition-colors"
-                  >
-                    <Github className="w-4 h-4 text-emerald-400" />
-                    <span className="text-slate-300">GitHub</span>
-                  </a>
-                </div>
-              </div>
+
             </div>
           </div>
         </div>
