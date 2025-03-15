@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDropzone } from 'react-dropzone';
+import { useDropzone, FileRejection } from 'react-dropzone';
 import { ref, set } from 'firebase/database';
 import { db } from '../firebase';
 import { FileData } from '../types';
@@ -51,13 +51,21 @@ const Upload = () => {
     setProgress(0);
 
     try {
-      const code = generateCode(); // 6-digit code
-      const encryptionKey = CryptoJS.lib.WordArray.random(16).toString(); // Generate 128-bit key
+      const code = generateCode();
+      const encryptionKey = CryptoJS.lib.WordArray.random(16).toString();
+
+      // Set initial progress to indicate file processing has begun
+      setProgress(10);
+      await new Promise(resolve => setTimeout(resolve, 300));
 
       if (file.type.startsWith('image/')) {
         const previewReader = new FileReader();
         previewReader.onload = (e) => setPreviewUrl(e.target?.result as string);
         previewReader.readAsDataURL(file);
+
+        // Update progress after preview generation
+        setProgress(20);
+        await new Promise(resolve => setTimeout(resolve, 200));
       } else {
         setPreviewUrl(null);
       }
@@ -66,40 +74,56 @@ const Upload = () => {
 
       reader.onprogress = (event) => {
         if (event.lengthComputable) {
-          const percentage = (event.loaded / event.total) * 100;
+          // Scale file reading to be 20-60% of the total progress
+          const percentage = 20 + (event.loaded / event.total) * 40;
           setProgress(Math.round(percentage));
         }
       };
 
       reader.onload = async (e) => {
         try {
+          // File read complete - update progress
+          setProgress(60);
+          await new Promise(resolve => setTimeout(resolve, 300));
+
           const base64Data = e.target?.result as string;
           const expiresAt = Date.now() + 69 * 60 * 1000;
 
-          // Encrypt the file data
-          const encryptedData = CryptoJS.AES.encrypt(base64Data, encryptionKey).toString();
+          // Encryption started - update progress
+          setProgress(70);
+          await new Promise(resolve => setTimeout(resolve, 300));
 
-          // Encrypt the encryption key with the master key
+          const encryptedData = CryptoJS.AES.encrypt(base64Data, encryptionKey).toString();
           const encryptedKey = CryptoJS.AES.encrypt(encryptionKey, MASTER_KEY).toString();
+
+          // Encryption complete - update progress
+          setProgress(80);
+          await new Promise(resolve => setTimeout(resolve, 200));
 
           const fileData: FileData = {
             id: code,
-            code, // Only the 6-digit code
+            code,
             fileName: file.name,
             fileSize: file.size,
             fileType: file.type,
             uploadedAt: Date.now(),
             expiresAt,
-            data: encryptedData, // Encrypted file data
-            encryptedKey // Encrypted encryption key
+            data: encryptedData,
+            encryptedKey
           };
 
+          // Firebase upload started - update progress
           setProgress(90);
+          await new Promise(resolve => setTimeout(resolve, 400));
+
           await set(ref(db, `files/${code}`), fileData);
+
+          // Upload complete
           setProgress(100);
           setUploadedFile(fileData);
           toast.success(`File uploaded successfully! Share the code ${code} with the recipient.`);
 
+          // Set expiration timer
           setTimeout(async () => {
             try {
               await set(ref(db, `files/${code}`), null);
@@ -127,14 +151,20 @@ const Upload = () => {
       console.error('Error uploading file:', error);
       toast.error('Failed to upload file');
     } finally {
-      setTimeout(() => {
+      // Only reset after a delay if the upload is completed
+      if (progress === 100) {
+        setTimeout(() => {
+          setIsUploading(false);
+          setProgress(0);
+        }, 500);
+      } else {
         setIsUploading(false);
         setProgress(0);
-      }, 500);
+      }
     }
   };
 
-  const onDropRejected = (rejectedFiles: any[]) => {
+  const onDropRejected = (rejectedFiles: FileRejection[]) => {
     const file = rejectedFiles[0];
     if (file?.size > MAX_FILE_SIZE) {
       toast.error(`File is too large. Maximum size is ${formatFileSize(MAX_FILE_SIZE)}`);
@@ -170,74 +200,77 @@ const Upload = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-medium mb-8 text-white">Upload a file (one file at a time supported)</h1>
+    <div className="max-w-2xl mx-auto px-4 py-12">
+      <h1 className="text-2xl font-medium mb-8 text-white">Upload a file</h1>
+      <p className="text-gray-400 text-sm mb-6">One file at a time supported</p>
 
-      <div className="bg-gray-900 bg-opacity-40 rounded-md border border-gray-800 p-6">
+      <div className="bg-gray-900/40 rounded-xl border border-gray-800 p-8 backdrop-blur-sm">
         <div
           {...getRootProps()}
-          className={`border border-dashed rounded p-8 text-center cursor-pointer transition-colors relative ${
-            isDragActive ? 'border-emerald-400 bg-gray-800' : 'border-gray-700 hover:border-emerald-400 hover:bg-black'
+          className={`border border-dashed rounded-lg p-10 text-center cursor-pointer transition-all duration-300 relative ${
+            isDragActive ? 'border-emerald-400 bg-gray-800/50' : 'border-gray-700 hover:border-emerald-400 hover:bg-black/50'
           }`}
         >
           <input {...getInputProps()} />
-          <UploadIcon className="w-10 h-10 mx-auto mb-4 text-gray-500" />
+          <UploadIcon className="w-12 h-12 mx-auto mb-4 text-gray-500 transition-colors" />
           {isDragActive ? (
             <p className="text-emerald-400 text-sm">Drop the file here</p>
           ) : (
             <p className="text-gray-400 text-sm">Drag & drop a file here, or click to select</p>
           )}
-          <div className="flex items-center justify-center gap-2 text-xs text-gray-500 mt-3">
+          <div className="flex items-center justify-center gap-2 text-xs text-gray-500 mt-4">
             <AlertCircle className="w-3 h-3" />
             <span>Maximum file size: {formatFileSize(MAX_FILE_SIZE)}</span>
           </div>
         </div>
 
         {isUploading && (
-          <div className="mt-4 space-y-2">
-            <div className="flex justify-between text-xs text-gray-400">
+          <div className="mt-6 space-y-3">
+            <div className="flex justify-between text-sm text-gray-400">
               <span>Uploading...</span>
               <span>{progress}%</span>
             </div>
-            <Progress value={progress} className="h-1" />
+            <Progress value={progress} className="h-1.5" />
           </div>
         )}
 
         {uploadedFile && (
-          <div className="mt-6 space-y-4">
-            <div className="bg-black rounded p-4 border border-gray-800">
-              <h3 className="text-sm font-medium text-emerald-400 mb-3">Your share code</h3>
-              <div className="flex items-center gap-2 bg-gray-900 rounded p-3 border border-gray-800">
-                <span className="font-mono text-xl font-medium text-white flex-1 text-center">
+          <div className="mt-8 space-y-6">
+            <div className="bg-black/60 rounded-lg p-6 border border-gray-800">
+              <h3 className="text-sm font-medium text-emerald-400 mb-4">Your share code</h3>
+              <div className="flex items-center gap-3 bg-gray-900/70 rounded-lg p-4 border border-gray-800">
+                <span className="font-mono text-2xl font-medium text-white flex-1 text-center tracking-wider">
                   {uploadedFile.code}
                 </span>
                 <button
                   onClick={() => copyToClipboard(uploadedFile.code)}
-                  className="p-1.5 hover:bg-gray-800 rounded transition-colors"
+                  className="p-2 hover:bg-emerald-950/50 rounded-lg transition-colors"
                   title="Copy to clipboard"
                 >
                   {isCopied ? (
-                    <CheckCircle className="w-4 h-4 text-emerald-400" />
+                    <CheckCircle className="w-5 h-5 text-emerald-400" />
                   ) : (
-                    <Copy className="w-4 h-4 text-gray-400" />
+                    <Copy className="w-5 h-5 text-gray-400 hover:text-emerald-400 transition-colors" />
                   )}
                 </button>
               </div>
-              <p className="text-xs text-gray-400 mt-2">Share this 6-digit code with the recipient.</p>
+              <p className="text-xs text-gray-400 mt-3">Share this 6-digit code with the recipient.</p>
             </div>
 
-            <div className="bg-black rounded p-4 border border-gray-800">
+            <div className="bg-black/60 rounded-lg p-6 border border-gray-800">
               <div className="flex items-start gap-4">
-                <div className="p-2 bg-gray-900 rounded">{getFileIcon(uploadedFile.fileType, 'w-6 h-6 text-emerald-400')}</div>
-                <div className="flex-1 space-y-2">
+                <div className="p-3 bg-gray-900/70 rounded-lg">
+                  {getFileIcon(uploadedFile.fileType, 'w-7 h-7 text-emerald-400')}
+                </div>
+                <div className="flex-1 space-y-3">
                   <h3 className="text-sm font-medium">File details</h3>
-                  <div className="space-y-1.5 text-xs text-gray-400">
+                  <div className="space-y-2 text-sm text-gray-400">
                     <p>Name: {uploadedFile.fileName}</p>
                     <p>Size: {formatFileSize(uploadedFile.fileSize)}</p>
                     <p>Uploaded: {formatDate(uploadedFile.uploadedAt)}</p>
                     {timeLeft !== null && (
                       <p className="flex items-center gap-2 text-emerald-400">
-                        <Clock className="w-3 h-3" />
+                        <Clock className="w-4 h-4" />
                         Expires in {formatTimeLeft(timeLeft)}
                       </p>
                     )}
@@ -246,9 +279,11 @@ const Upload = () => {
               </div>
 
               {previewUrl && (
-                <div className="mt-4">
+                <div className="mt-6">
                   <p className="text-xs font-medium text-gray-400 mb-2">Preview:</p>
-                  <img src={previewUrl} alt="File preview" className="w-full h-40 object-contain rounded border border-gray-800" />
+                  <div className="rounded-lg border border-gray-800 overflow-hidden bg-black/30 p-1">
+                    <img src={previewUrl} alt="File preview" className="w-full h-48 object-contain rounded" />
+                  </div>
                 </div>
               )}
             </div>
@@ -256,40 +291,40 @@ const Upload = () => {
         )}
 
         {/* File Types Section */}
-        <div className="mt-6 grid grid-cols-2 gap-4 text-xs text-gray-400">
-          <div className="bg-gray-900 bg-opacity-50 rounded p-3 border border-gray-800">
-            <p className="font-medium text-gray-300 mb-2">Supported Files</p>
-            <div className="space-y-1">
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div className="bg-gray-900/30 rounded-lg p-4 border border-gray-800/50">
+            <p className="font-medium text-gray-300 mb-3">Supported Files</p>
+            <div className="space-y-1.5 text-gray-400">
               <p>Images: .png, .jpg, .jpeg, .gif</p>
               <p>PDFs: .pdf</p>
               <p>HTML: .html, .htm</p>
               <p>Audio: .mp3, .wav</p>
               <p>Text: .txt</p>
               <p>Video: GIF, .mp4 less than 1 MB</p>
-                <p>Documents: .doc, .docx</p>
-                <p>Spreadsheets: .xls, .xlsx</p>
-                <p>Presentations: .ppt, .pptx</p>
-                <p>Code: .js, .ts, .py, .java</p>
-                <p>Markdown: .md</p>
-                <p>CSV: .csv</p>
+              <p>Documents: .doc, .docx</p>
+              <p>Spreadsheets: .xls, .xlsx</p>
+              <p>Presentations: .ppt, .pptx</p>
+              <p>Code: .js, .ts, .py, .java</p>
+              <p>Markdown: .md</p>
+              <p>CSV: .csv</p>
             </div>
           </div>
-          <div className="bg-gray-900 bg-opacity-50 rounded p-3 border border-gray-800">
-            <p className="font-medium text-gray-300 mb-2">Unsupported Files</p>
-            <div className="space-y-1">
+          <div className="bg-gray-900/30 rounded-lg p-4 border border-gray-800/50">
+            <p className="font-medium text-gray-300 mb-3">Unsupported Files</p>
+            <div className="space-y-1.5 text-gray-400">
               <p>Executables: .exe, .bat</p>
               <p>Archives: .zip, .rar</p>
-                <p>System Files: .dll, .sys</p>
-                <p>Scripts: .sh, .ps1</p>
-                <p>Database Files: .db, .sql</p>
-                <p>Virtual Disk Images: .vdi, .vmdk</p>
-                <p>Configuration Files: .cfg, .ini</p>
+              <p>System Files: .dll, .sys</p>
+              <p>Scripts: .sh, .ps1</p>
+              <p>Database Files: .db, .sql</p>
+              <p>Virtual Disk Images: .vdi, .vmdk</p>
+              <p>Configuration Files: .cfg, .ini</p>
             </div>
           </div>
         </div>
 
         {/* Network Note Section */}
-        <div className="mt-4 text-xs text-gray-500 bg-gray-900 bg-opacity-50 rounded p-3 border border-gray-800">
+        <div className="mt-4 text-xs text-gray-500 bg-gray-900/30 rounded-lg p-4 border border-gray-800/50">
           <p>
             <span className="font-medium">Note:</span> If you're experiencing a slow network, allow a few seconds after uploading for the share code to appear. An enhanced progress bar is in development.
           </p>

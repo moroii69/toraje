@@ -130,13 +130,13 @@ const Retrieve = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8">
+    <div className="max-w-2xl mx-auto px-4 py-12">
       <h1 className="text-2xl font-medium mb-8 text-white">Retrieve File</h1>
 
-      <div className="bg-gray-900 bg-opacity-40 rounded-md border border-gray-800 p-6">
-        <div className="space-y-4">
+      <div className="bg-gray-900/40 rounded-xl border border-gray-800 p-8 backdrop-blur-sm">
+        <div className="space-y-6">
           <div>
-            <label htmlFor="code" className="block text-xs font-medium text-gray-400 mb-1">
+            <label htmlFor="code" className="block text-sm font-medium text-gray-400 mb-2">
               Enter Your 6-Digit Code
             </label>
             <input
@@ -145,9 +145,9 @@ const Retrieve = () => {
               placeholder="Enter 6-digit code (e.g., Q9042Y)"
               value={retrieveCode}
               onChange={(e) => setRetrieveCode(e.target.value.toUpperCase())}
-              className="w-full px-4 py-2.5 text-lg font-mono bg-black border border-gray-700 rounded
-                focus:ring-1 focus:ring-emerald-400 focus:border-emerald-400 outline-none
-                tracking-wider text-center uppercase text-white"
+              className="w-full px-4 py-3 text-xl font-mono bg-black/60 border border-gray-700 rounded-lg
+                focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 outline-none
+                tracking-wider text-center uppercase text-white transition-all duration-300"
               maxLength={6}
               disabled={isRetrieving}
             />
@@ -156,35 +156,35 @@ const Retrieve = () => {
           <button
             onClick={retrieveFile}
             disabled={retrieveCode.length !== 6 || isRetrieving}
-            className={`w-full py-3 px-4 rounded font-medium text-black transition-all
+            className={`w-full py-3.5 px-4 rounded-lg font-medium text-black transition-all duration-300
               flex items-center justify-center gap-2
               ${retrieveCode.length === 6 && !isRetrieving
                 ? 'bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700'
-                : 'bg-gray-700 cursor-not-allowed'}`}
+                : 'bg-gray-700/80 cursor-not-allowed'}`}
           >
             {isRetrieving ? (
               <>
-                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
+                <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
                 <span>Retrieving...</span>
               </>
             ) : (
               <>
-                <Download className="w-4 h-4" />
+                <Download className="w-5 h-5" />
                 <span>Retrieve File</span>
               </>
             )}
           </button>
         </div>
 
-        <div className="mt-6 p-4 bg-black rounded border border-gray-800">
-          <div className="flex items-start gap-2">
-            <AlertCircle className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
-            <div className="space-y-2">
-              <p className="text-xs text-gray-300">
+        <div className="mt-8 p-6 bg-black/60 rounded-lg border border-gray-800">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+            <div className="space-y-3">
+              <p className="text-sm text-gray-300">
                 Files are automatically deleted after 69 minutes for security.
                 Make sure to download your file before it expires!
               </p>
-              <p className="text-xs text-gray-400">
+              <p className="text-sm text-gray-400">
                 Enter the 6-digit code you received to download your file.
               </p>
             </div>
@@ -193,6 +193,5 @@ const Retrieve = () => {
       </div>
     </div>
   );
-};
-
+}
 export default Retrieve;
