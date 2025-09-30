@@ -12,6 +12,7 @@
   "dependencies": {
     "@radix-ui/react-progress": "^1.1.1",
     "@vercel/analytics": "^1.5.0",
+    "caniuse-lite": "^1.0.30001746",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "crypto-js": "^4.2.0",
