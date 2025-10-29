@@ -58,18 +58,25 @@ npm install
 yarn install
 ```
 
-3. Create a `.env` file in the project root with your Firebase configuration:
+3. Set up environment variables:
 
-```env
-VITE_FIREBASE_API_KEY=your_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
-VITE_FIREBASE_DATABASE_URL=your_database_url
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-VITE_MASTER_KEY=your_master_encryption_key
-```
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Then edit `.env` and fill in your Firebase configuration and master encryption key.
+   
+   📖 **For detailed setup instructions, see [ENV_SETUP.md](ENV_SETUP.md)**
+   
+   Required variables:
+   - `VITE_FIREBASE_API_KEY`
+   - `VITE_FIREBASE_AUTH_DOMAIN`
+   - `VITE_FIREBASE_PROJECT_ID`
+   - `VITE_FIREBASE_STORAGE_BUCKET`
+   - `VITE_FIREBASE_MESSAGING_SENDER_ID`
+   - `VITE_FIREBASE_APP_ID`
+   - `VITE_FIREBASE_MEASUREMENT_ID`
+   - `VITE_MASTER_KEY`
 
 4. Start the development server:
 
