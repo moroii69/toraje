@@ -175,7 +175,12 @@ After configuring your environment variables, you need to set up Firebase Realti
 2. **Use different keys for different environments** - Development and production should use separate master keys
 3. **Rotate keys periodically** - Consider rotating the master key regularly for enhanced security
 4. **Monitor Firebase usage** - Set up billing alerts and monitor for unusual activity
-5. **Client-side encryption limitation** - The current implementation uses client-side encryption. For enhanced security, consider moving key management to a backend service
+5. **⚠️ CRITICAL: Client-side encryption limitation** - The current implementation stores the `VITE_MASTER_KEY` as a client-side environment variable, which means it's exposed in the compiled JavaScript bundle. This is a known architectural limitation - any user can inspect the browser's network requests or JavaScript to retrieve this key. For production use with sensitive data, consider:
+   - Moving encryption key management to a secure backend service
+   - Implementing additional authentication layers
+   - Using Firebase Authentication with security rules
+   - Considering this as a convenience tool rather than a high-security solution
+6. **Firebase Database Access** - The database rules allow read/write access to file nodes. Ensure you understand the security implications and adjust rules based on your specific security requirements
 
 ## Need Help?
 
